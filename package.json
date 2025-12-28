@@ -28,25 +28,25 @@
   },
   "homepage": "https://github.com/zaininnari/postcss-cachebuster",
   "dependencies": {
-    "canonical-path": "0.0.2",
-    "chalk": "^1.1.1",
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "chai": "^4.0",
-    "eslint": "^2.13.1",
+    "canonical-path": "^1.0.0",
+    "chai": "^6.2.2",
+    "chalk": "^5.6.2",
+    "eslint": "^7.32.0",
     "gulp": "^5.0.1",
-    "gulp-eslint": "^0.14.0",
-    "gulp-mocha": "2.1.2",
-    "gulp-postcss": "6.0.1",
-    "gulp-rename": "^1.2.2",
+    "gulp-eslint": "^6.0.0",
+    "gulp-mocha": "^10.0.1",
+    "gulp-postcss": "^10.0.0",
+    "gulp-rename": "^2.1.0",
     "postcss": "^8.5.6",
     "sinon": "^21.0.1",
-    "sinon-chai": "^3.0"
+    "sinon-chai": "^4.0.1"
   },
   "scripts": {
-    "lint": "eslint --fix index.js",
-    "test": "gulp",
-    "lint:watch": "esw --fix --watch index.js"
+    "lint": "eslint --fix index.mjs",
+    "test": "gulp --gulpfile gulpfile.mjs",
+    "lint:watch": "esw --fix --watch index.mjs"
   }
 }
