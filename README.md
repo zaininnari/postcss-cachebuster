@@ -1,7 +1,29 @@
-# PostCSS Cachebuster [![Build Status](https://travis-ci.org/glebmachine/postcss-cachebuster.svg?branch=master)](https://travis-ci.org/glebmachine/postcss-cachebuster) [![npm version](https://badge.fury.io/js/postcss-cachebuster.svg)](http://badge.fury.io/js/postcss-cachebuster)
+# PostCSS Cachebuster [![Test](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test.yml/badge.svg)](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test.yml) [![Test (latest deps)](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test-latest.yml/badge.svg)](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test-latest.yml)
 
-[PostCSS] plugin added cachebuster to local files based on their datechanged.
+This project is a fork of https://github.com/glebmachine/postcss-cachebuster.
 
+- Package name: `@zaininnari/postcss-cachebuster`
+- This fork focuses on keeping the plugin working on modern Node.js/PostCSS.
+
+[PostCSS] plugin added cachebuster to local files based on their date changed.
+
+## Install
+```bash
+npm i -D @zaininnari/postcss-cachebuster
+```
+
+## Usage
+```js
+import postcss from 'postcss';
+import cachebuster from '@zaininnari/postcss-cachebuster';
+
+await postcss([
+  cachebuster({
+    imagesPath: '/images',
+    cssPath: '/stylesheets'
+  })
+]).process(css, { from: undefined });
+```
 
 ## Input css example
 ```css
@@ -20,7 +42,7 @@
 ```css
 @import url("/css/styles.css?v66f22a33fff");
 .foo {
-  background-image : url('../images/index/logo.png?v14f32a475b8')
+  background-image : url('../images/index/logo.png?v14f32a475b8');
   behavior : url('../behaviors/backgroundsize.min.htc?v15f55a666c2');
 }
 @font-face {
@@ -39,6 +61,8 @@ postcss([
 ])
 ```
 See [PostCSS] docs for examples for your environment.
+
+[PostCSS]: https://postcss.org/
 
 ## Options
 
