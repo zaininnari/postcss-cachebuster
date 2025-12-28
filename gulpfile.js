@@ -1,16 +1,18 @@
 'use strict';
 
-var gulp = require('gulp');
-var files = ['index.js', 'test/*.js', 'gulpfile.js'];
+const gulp = require('gulp');
+const mocha = require('gulp-mocha');
 
-gulp.task('test', function() {
-    var mocha = require('gulp-mocha');
-    return gulp.src('test/*.js', { read: false })
-      .pipe(mocha());
-});
+const files = ['index.js', 'test/*.js', 'gulpfile.js'];
 
-gulp.task('default', ['test']);
+function test() {
+  return gulp.src('test/*.js', { read: false }).pipe(mocha());
+}
 
-gulp.task('watch', ['test'], function() {
-    gulp.watch(files, ['test']);
-});
+function watch() {
+  return gulp.watch(files, gulp.series(test));
+}
+
+exports.test = test;
+exports.watch = gulp.series(test, watch);
+exports.default = gulp.series(test);
