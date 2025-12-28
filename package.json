@@ -34,18 +34,14 @@
   },
   "devDependencies": {
     "chai": "^6.2.2",
-    "eslint": "^7.32.0",
     "gulp": "^5.0.1",
-    "gulp-eslint": "^6.0.0",
     "gulp-mocha": "^10.0.1",
     "gulp-postcss": "^10.0.0",
-    "gulp-rename": "^2.1.0",
     "postcss": "^8.5.6",
     "sinon": "^21.0.1",
     "sinon-chai": "^4.0.1"
   },
   "scripts": {
-    "lint": "eslint --fix index.mjs",
     "test": "gulp --gulpfile gulpfile.mjs",
     "lint:watch": "esw --fix --watch index.mjs"
   }

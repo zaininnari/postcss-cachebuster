@@ -1,10 +1,8 @@
 .gitignore
 .jshintrc
-.eslintrc.json
 
 node_modules/
 
 test/
-.travis.yml
 
 gulpfile.mjs
