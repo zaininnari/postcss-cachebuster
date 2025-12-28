@@ -12,7 +12,7 @@ chaiUse(sinonChai);
 
 const assert = function (input, output, opts, done, expectations) {
   postcss([plugin(opts)])
-    .process(input)
+    .process(input, {from: undefined})
     .then(function (result) {
       expect(result.css).to.eql(output);
       expect(result.warnings()).to.be.empty;
