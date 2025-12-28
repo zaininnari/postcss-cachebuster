@@ -1,7 +1,7 @@
 
 {
-  "max-len": 0,
   "rules": {
+    "max-len": 0,
     "indent": ["error", 2, { "VariableDeclarator": 1 }],
     "global-require": 0,
     "func-names": 0,

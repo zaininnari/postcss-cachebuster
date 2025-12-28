@@ -9,6 +9,8 @@ var path = require('canonical-path');
 var checksums = {};
 
 module.exports = postcss.plugin('postcss-cachebuster', function (opts) {
+  "use strict";
+
   var pattern = /url\(('|")?([^'"\)]+)('|")?\)/g;
   var supportedProps = [
     'background',
