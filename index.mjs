@@ -9,7 +9,7 @@ const checksums = {};
 
 const plugin = (opts = {}) => {
   const pattern = /url\((['"])?([^'")]+)(['"])?\)/g;
-  let supportedProps = [
+  const supportedPropsDefault = [
     'background',
     'background-image',
     'border-image',
@@ -22,8 +22,9 @@ const plugin = (opts = {}) => {
   opts.type = opts.type || 'mtime';
   opts.paramName = opts.paramName || 'v';
   opts.hashAlgorithm = opts.hashAlgorithm || 'md5';
-  supportedProps = opts.supportedProps || supportedProps;
-  supportedProps = supportedProps.concat(opts.additionalProps || []);
+  opts.supportedProps = opts.supportedProps || supportedPropsDefault;
+  opts.additionalProps = opts.additionalProps || [];
+  const supportedProps = opts.supportedProps.concat(opts.additionalProps);
 
   function createCachebuster(assetPath, origPath, type) {
     let cachebuster;
