@@ -28,7 +28,7 @@ const assert = function (input, output, opts, done, expectations) {
 
 describe('postcss-cachebuster', function () {
   const horseMtime = fs.statSync('./test/files/horse.jpg').mtime.getTime().toString(16);
-  const horseHorseMtime = fs.statSync('./test/files/horse with spaces.jpg').mtime.getTime().toString(16);
+  const horseWithSpacesMtime = fs.statSync('./test/files/horse with spaces.jpg').mtime.getTime().toString(16);
   const fontMtime = fs.statSync('./test/files/opensansbold.ttf').mtime.getTime().toString(16);
   const htcMtime = fs.statSync('./test/files/backgroundsize.htc').mtime.getTime().toString(16);
   const cssMtime = fs.statSync('./test/css/styles.css').mtime.getTime().toString(16);
@@ -54,7 +54,7 @@ describe('postcss-cachebuster', function () {
   it('Process image, with spaces in name', function (done) {
     assert(
       'a { background-image : url("/files/horse with spaces.jpg"); }',
-      'a { background-image : url("/files/horse%20with%20spaces.jpg?v' + horseHorseMtime + '"); }',
+      'a { background-image : url("/files/horse%20with%20spaces.jpg?v' + horseWithSpacesMtime + '"); }',
       { imagesPath: '/test/' },
       done
     );
