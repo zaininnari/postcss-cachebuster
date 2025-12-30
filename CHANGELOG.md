@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0 (2025-12-30)
+- update dependencies
+- update support node version 20+
+
 ## 0.3.0 (2025-12-29)
 - update npm package
 - update support node version 18+
