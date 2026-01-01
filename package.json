@@ -38,7 +38,11 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "chai": "^6.2.2",
+    "eslint": "^9.39.2",
+    "eslint-plugin-n": "^17.23.1",
+    "globals": "^16.5.0",
     "gulp": "^5.0.1",
     "gulp-mocha": "^10.0.1",
     "gulp-postcss": "^10.0.0",
@@ -50,6 +54,7 @@
     "glob": "9.3.5"
   },
   "scripts": {
+    "lint": "eslint .",
     "test": "gulp --gulpfile gulpfile.mjs"
   }
 }
