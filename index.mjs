@@ -1,4 +1,3 @@
-import url from 'url';
 import fs from 'fs';
 import crypto from 'crypto';
 import chalk from 'chalk';
@@ -6,6 +5,15 @@ import chalk from 'chalk';
 import path from 'canonical-path';
 
 const checksums = {};
+
+/**
+ * parsed
+ * @typedef {Object} parsed
+ * @property {URL} u
+ * @property {boolean} isAbsolute
+ * @property {boolean} isRootRelativeButNotProtocolRelative
+ * @property {string} originalUrl
+ */
 
 const plugin = (opts = {}) => {
   const pattern = /url\((['"])?([^'")]+)(['"])?\)/g;
@@ -56,10 +64,17 @@ const plugin = (opts = {}) => {
     return cachebuster;
   }
 
-  function resolveUrl(assetUrl, file, imagesPath) {
+  /**
+   * @param assetUrl {URL}
+   * @param file {string}
+   * @param imagesPath {string}
+   * @param isRootRelativeButNotProtocolRelative {boolean}
+   * @returns {string}
+   */
+  function resolveUrl(assetUrl, file, imagesPath, isRootRelativeButNotProtocolRelative) {
     let assetPath = decodeURI(assetUrl.pathname);
 
-    if (/^\//.test(assetUrl.pathname)) {
+    if (isRootRelativeButNotProtocolRelative) {
       assetPath = path.join(imagesPath, assetPath);
     } else {
       assetPath = path.join(opts.cssPath || path.dirname(file), assetPath);
@@ -67,11 +82,17 @@ const plugin = (opts = {}) => {
     return assetPath;
   }
 
-  function updateAssetUrl(assetUrl, inputFile) {
-    const assetPath = resolveUrl(assetUrl, inputFile, opts.imagesPath);
+  /**
+   * @param assetUrl {URL}
+   * @param inputFile {string}
+   * @param isRootRelativeButNotProtocolRelative {boolean}
+   */
+  function updateAssetUrl(assetUrl, inputFile, isRootRelativeButNotProtocolRelative) {
+    const assetPath = resolveUrl(assetUrl, inputFile, opts.imagesPath, isRootRelativeButNotProtocolRelative);
 
     // complete url with cachebuster
-    const cachebuster = createCachebuster(assetPath, assetUrl.pathname, opts.type);
+    const originPath = isRootRelativeButNotProtocolRelative ? assetUrl.pathname : assetUrl.pathname.substring(1);
+    const cachebuster = createCachebuster(assetPath, originPath, opts.type);
     if (!cachebuster) {
       return;
     } else if (typeof opts.type === 'function') {
@@ -81,6 +102,39 @@ const plugin = (opts = {}) => {
     } else {
       assetUrl.search = '?' + opts.paramName + cachebuster;
     }
+  }
+
+  const DUMMY_BASE = 'http://localhost';
+
+  /**
+   * @param input {string}
+   * @returns {parsed}
+   */
+  function parseUrlPreserveRelative(input) {
+    const isAbsolute = /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(input);
+    const isRootRelativeButNotProtocolRelative = /^\/(?!\/)/.test(input);
+    const u = isAbsolute ? new URL(input) : new URL(input, DUMMY_BASE);
+    return {u, isAbsolute, isRootRelativeButNotProtocolRelative, originalUrl: input};
+  }
+
+  /**
+   * @param parsed {parsed}
+   * @returns {string|string}
+   */
+  function formatUrlPreserveRelative(parsed) {
+    const u = parsed.u;
+    const isAbsolute = parsed.isAbsolute;
+    const isRootRelativeButNotProtocolRelative = parsed.isRootRelativeButNotProtocolRelative;
+
+    if (isAbsolute) {
+      return u.toString();
+    }
+    const url = `${u.pathname}${u.search}${u.hash}`;
+    if (!isRootRelativeButNotProtocolRelative) {
+      // remove start slash
+      return  url.substring(1);
+    }
+    return url;
   }
 
   return {
@@ -96,10 +150,10 @@ const plugin = (opts = {}) => {
         const quote = results[1] || '"';
         const originalUrl = results[2];
 
-        const assetUrl = url.parse(originalUrl);
-        updateAssetUrl(assetUrl, inputFile);
+        const parsed = parseUrlPreserveRelative(originalUrl);
+        updateAssetUrl(parsed.u, inputFile, parsed.isRootRelativeButNotProtocolRelative, parsed.originalUrl);
 
-        atrule.params = 'url(' + quote + url.format(assetUrl) + quote + ')';
+        atrule.params = 'url(' + quote + formatUrlPreserveRelative(parsed) + quote + ')';
       });
 
       root.walkDecls(function walkThroughtDeclarations(declaration) {
@@ -111,20 +165,22 @@ const plugin = (opts = {}) => {
         declaration.value = declaration.value.replace(pattern, function (match, quote, originalUrl) {
           quote = quote || '"';
 
-          const assetUrl = url.parse(originalUrl);
+          const parsed = parseUrlPreserveRelative(originalUrl);
+          const assetUrl = parsed.u;
 
           // only locals
           if (
-            assetUrl.host ||
+            assetUrl.toString().indexOf(DUMMY_BASE) !== 0 ||
+            parsed.isAbsolute ||
             assetUrl.pathname.indexOf('//') === 0 ||
             assetUrl.pathname.indexOf(';base64') !== -1
           ) {
             return match;
           }
 
-          updateAssetUrl(assetUrl, inputFile);
+          updateAssetUrl(assetUrl, inputFile, parsed.isRootRelativeButNotProtocolRelative);
 
-          return 'url(' + quote + url.format(assetUrl) + quote + ')';
+          return 'url(' + quote + formatUrlPreserveRelative(parsed) + quote + ')';
         });
       });
     },

@@ -17,5 +17,6 @@ export default defineConfig([
         },
         plugins: {js, n},
         extends: ["js/recommended", "n/recommended"],
+        ignores: ['eslint.config.js'],
     },
 ]);
