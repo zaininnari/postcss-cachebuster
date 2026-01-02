@@ -11,8 +11,6 @@ export function watch() {
   return gulp.watch(files, gulp.series(test));
 }
 
-// gulp v5 が確実に拾えるよう、タスクとして明示登録
 gulp.task('test', test);
 gulp.task('watch', gulp.series(test, watch));
 gulp.task('default', gulp.series(test));
-
