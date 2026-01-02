@@ -95,7 +95,9 @@ const plugin = (opts = {}) => {
     const cachebuster = createCachebuster(assetPath, originPath, opts.type);
     if (!cachebuster) {
       return;
-    } else if (typeof opts.type === 'function') {
+    }
+
+    if (typeof opts.type === 'function') {
       assetUrl.pathname = cachebuster;
     } else if (assetUrl.search && assetUrl.search.length > 1) {
       assetUrl.search = assetUrl.search + '&' + opts.paramName + cachebuster;
