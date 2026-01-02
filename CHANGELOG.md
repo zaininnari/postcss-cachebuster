@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1 (2026-01-02)
+- Add ESLint
+  - @eslint/js recommended
+  - eslint-plugin-n recommended
+
 ## 0.4.0 (2025-12-30)
 - update dependencies
 - update support node version 20+
