@@ -1,11 +1,11 @@
-name: Test (latest deps)
+name: Prettier
 
 on:
   push:
   pull_request:
 
 jobs:
-  test:
+  prettier:
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,12 +19,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-      - name: Remove package-lock.json
-        run: rm -f package-lock.json
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Install dependencies (latest allowed by package.json)
-        run: npm install
-
-      - name: Run tests
-        run: npm test
+      - name: Prettier check
+        run: npm run format:check

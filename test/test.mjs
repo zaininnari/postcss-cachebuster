@@ -12,7 +12,7 @@ chaiUse(sinonChai);
 
 const assert = function (input, output, opts, done, expectations) {
   postcss([plugin(opts)])
-    .process(input, {from: undefined})
+    .process(input, { from: undefined })
     .then(function (result) {
       expect(result.css).to.eql(output);
       expect(result.warnings()).to.be.empty;
@@ -38,7 +38,7 @@ describe('postcss-cachebuster', function () {
       'a { background-image : url("files/horse.jpg"); }',
       'a { background-image : url("files/horse.jpg?v' + horseMtime + '"); }',
       { cssPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -47,7 +47,7 @@ describe('postcss-cachebuster', function () {
       'a { background-image : url("/files/horse.jpg"); }',
       'a { background-image : url("/files/horse.jpg?v' + horseMtime + '"); }',
       { imagesPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -56,7 +56,7 @@ describe('postcss-cachebuster', function () {
       'a { background-image : url("/files/horse with spaces.jpg"); }',
       'a { background-image : url("/files/horse%20with%20spaces.jpg?v' + horseWithSpacesMtime + '"); }',
       { imagesPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -65,7 +65,7 @@ describe('postcss-cachebuster', function () {
       'a { background-image : url("data:image/png;base64,iVBORw0"); }',
       'a { background-image : url("data:image/png;base64,iVBORw0"); }',
       { imagesPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -79,10 +79,10 @@ describe('postcss-cachebuster', function () {
       function () {
         expect(console.log).to.be.calledOnceWith(
           'Cachebuster:',
-          chalk.yellow('file unreachable or not exists', 'there/is/no/image.jpg')
+          chalk.yellow('file unreachable or not exists', 'there/is/no/image.jpg'),
         );
         console.log.restore();
-      }
+      },
     );
   });
 
@@ -91,7 +91,7 @@ describe('postcss-cachebuster', function () {
       'a { src : url("files/opensansbold.ttf"); }',
       'a { src : url("files/opensansbold.ttf?v' + fontMtime + '"); }',
       { cssPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -100,7 +100,7 @@ describe('postcss-cachebuster', function () {
       'a { behavior : url("files/backgroundsize.htc"); }',
       'a { behavior : url("files/backgroundsize.htc?v' + htcMtime + '"); }',
       { cssPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -109,7 +109,7 @@ describe('postcss-cachebuster', function () {
       '@import url("/css/styles.css");',
       '@import url("/css/styles.css?v' + cssMtime + '");',
       { imagesPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -118,7 +118,7 @@ describe('postcss-cachebuster', function () {
       '@import url("/css/styles.css");@import url("/css/styles.css");',
       '@import url("/css/styles.css?v' + cssMtime + '");@import url("/css/styles.css?v' + cssMtime + '");',
       { imagesPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -134,7 +134,7 @@ describe('postcss-cachebuster', function () {
         },
         cssPath: '/test/',
       },
-      done
+      done,
     );
   });
 
@@ -143,7 +143,7 @@ describe('postcss-cachebuster', function () {
       'a { background-image : url("files/horse.jpg"); }',
       'a { background-image : url("files/horse.jpg?vac17ceac5567ecf01eab7c474b3b8426"); }',
       { type: 'checksum', cssPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -152,7 +152,7 @@ describe('postcss-cachebuster', function () {
       'a { background-image : url("files/horse.jpg"); }',
       'a { background-image : url("files/horse.jpg?v8a88fc3de434b972f5bebdcd33474cc2259310c1"); }',
       { type: 'checksum', hashAlgorithm: 'sha1', cssPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -161,7 +161,7 @@ describe('postcss-cachebuster', function () {
       'a { mask-image : url("/files/horse.jpg"); }',
       'a { mask-image : url("/files/horse.jpg"); }',
       { imagesPath: '/test/' },
-      done
+      done,
     );
   });
 
@@ -170,7 +170,7 @@ describe('postcss-cachebuster', function () {
       'a { mask-image : url("/files/horse.jpg"); }',
       'a { mask-image : url("/files/horse.jpg?v' + horseMtime + '"); }',
       { imagesPath: '/test/', additionalProps: ['mask-image'] },
-      done
+      done,
     );
   });
 });

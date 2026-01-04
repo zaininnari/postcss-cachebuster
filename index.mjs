@@ -17,6 +17,7 @@ const checksums = {};
 
 const plugin = (opts = {}) => {
   const pattern = /url\((['"])?([^'")]+)(['"])?\)/g;
+  // prettier-ignore
   const supportedPropsDefault = [
     'background',
     'background-image',
@@ -50,9 +51,7 @@ const plugin = (opts = {}) => {
         cachebuster = checksums[checksumKey];
       } else {
         const data = fs.readFileSync(assetPath);
-        cachebuster = crypto.createHash(opts.hashAlgorithm)
-          .update(data)
-          .digest('hex');
+        cachebuster = crypto.createHash(opts.hashAlgorithm).update(data).digest('hex');
 
         checksums[checksumKey] = cachebuster;
       }
@@ -116,7 +115,7 @@ const plugin = (opts = {}) => {
     const isAbsolute = /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(input);
     const isRootRelativeButNotProtocolRelative = /^\/(?!\/)/.test(input);
     const u = isAbsolute ? new URL(input) : new URL(input, DUMMY_BASE);
-    return {u, isAbsolute, isRootRelativeButNotProtocolRelative, originalUrl: input};
+    return { u, isAbsolute, isRootRelativeButNotProtocolRelative, originalUrl: input };
   }
 
   /**
@@ -134,7 +133,7 @@ const plugin = (opts = {}) => {
     const url = `${u.pathname}${u.search}${u.hash}`;
     if (!isRootRelativeButNotProtocolRelative) {
       // remove start slash
-      return  url.substring(1);
+      return url.substring(1);
     }
     return url;
   }
