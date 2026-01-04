@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0 (2026-01-04)
+
+- Add Prettier
+
 ## 0.4.1 (2026-01-02)
 
 - Add ESLint
