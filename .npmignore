@@ -5,7 +5,7 @@
 # IDE
 .vscode/
 .idea/
-+.iml
+*.iml
 
 # CI
 .github/
@@ -16,6 +16,7 @@ node_modules/
 # Tests / tooling (not needed at runtime)
 test/
 .prettierignore
+eslint.config.js
 gulpfile.mjs
 package-lock.json
 prettier.config.js
