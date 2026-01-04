@@ -1,8 +1,21 @@
+# VCS
+.git/
 .gitignore
-.jshintrc
 
+# IDE
+.vscode/
+.idea/
++.iml
+
+# CI
+.github/
+
+# Dependencies / logs
 node_modules/
 
+# Tests / tooling (not needed at runtime)
 test/
-
+.prettierignore
 gulpfile.mjs
+package-lock.json
+prettier.config.js
