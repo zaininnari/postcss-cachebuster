@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0 (2026-01-04)
+
+- remove unnecessary canonical-path and path polyfill
+
 ## 0.5.0 (2026-01-04)
 
 - Add Prettier
