@@ -2,7 +2,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import chalk from 'chalk';
 
-import path from 'canonical-path';
+import path from 'node:path';
 
 const checksums = {};
 
@@ -73,10 +73,13 @@ const plugin = (opts = {}) => {
   function resolveUrl(assetUrl, file, imagesPath, isRootRelativeButNotProtocolRelative) {
     let assetPath = decodeURI(assetUrl.pathname);
 
+    // URL pathname always use '/', so use the POSIX API here to avoid introducing OS-specific path separators.
+    const posixPath = path.posix;
+
     if (isRootRelativeButNotProtocolRelative) {
-      assetPath = path.join(imagesPath, assetPath);
+      assetPath = posixPath.join(imagesPath, assetPath);
     } else {
-      assetPath = path.join(opts.cssPath || path.dirname(file), assetPath);
+      assetPath = posixPath.join(opts.cssPath || posixPath.dirname(file), assetPath);
     }
     return assetPath;
   }
