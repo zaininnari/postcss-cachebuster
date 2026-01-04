@@ -8,11 +8,13 @@ This project is a fork of https://github.com/glebmachine/postcss-cachebuster.
 [PostCSS] plugin added cachebuster to local files based on their date changed.
 
 ## Install
+
 ```bash
 npm i -D @zaininnari/postcss-cachebuster
 ```
 
 ## Usage
+
 ```js
 import postcss from 'postcss';
 import cachebuster from '@zaininnari/postcss-cachebuster';
@@ -20,17 +22,18 @@ import cachebuster from '@zaininnari/postcss-cachebuster';
 await postcss([
   cachebuster({
     imagesPath: '/images',
-    cssPath: '/stylesheets'
-  })
+    cssPath: '/stylesheets',
+  }),
 ]).process(css, { from: undefined });
 ```
 
 ## Input css example
+
 ```css
-@import url("/css/styles.css");
+@import url('/css/styles.css');
 .foo {
-  background-image : url('../images/index/logo.png');
-  behavior : url('../behaviors/backgroundsize.min.htc');
+  background-image: url('../images/index/logo.png');
+  behavior: url('../behaviors/backgroundsize.min.htc');
 }
 @font-face {
   font-family: 'My font';
@@ -39,11 +42,12 @@ await postcss([
 ```
 
 ## Output css example
+
 ```css
-@import url("/css/styles.css?v66f22a33fff");
+@import url('/css/styles.css?v66f22a33fff');
 .foo {
-  background-image : url('../images/index/logo.png?v14f32a475b8');
-  behavior : url('../behaviors/backgroundsize.min.htc?v15f55a666c2');
+  background-image: url('../images/index/logo.png?v14f32a475b8');
+  behavior: url('../behaviors/backgroundsize.min.htc?v15f55a666c2');
 }
 @font-face {
   font-family: 'My font';
@@ -52,14 +56,16 @@ await postcss([
 ```
 
 ## Configure
+
 ```js
-postcss([ 
+postcss([
   require('postcss-cachebuster')({
-    imagesPath : '/images', 
-    cssPath : '/stylesheets'
-  }) 
-])
+    imagesPath: '/images',
+    cssPath: '/stylesheets',
+  }),
+]);
 ```
+
 See [PostCSS] docs for examples for your environment.
 
 [PostCSS]: https://postcss.org/
@@ -95,31 +101,26 @@ Add to this list by setting the `additionalProps` configuration option.
 To add support for `mask-image` properties, for example:
 
 ```js
-postcss([ 
+postcss([
   require('postcss-cachebuster')({
-    additionalProps : [
-      'mask-image',
-      '-webkit-mask-image'
-    ]
-  })
-])
+    additionalProps: ['mask-image', '-webkit-mask-image'],
+  }),
+]);
 ```
 
 Replace the default list by setting the `supportedProps` configuration option.
 To limit the cachbusting to background images only, for example:
 
 ```js
-postcss([ 
+postcss([
   require('postcss-cachebuster')({
-    supportedProps : [
-      'background',
-      'background-image'
-    ]
-  })
-])
+    supportedProps: ['background', 'background-image'],
+  }),
+]);
 ```
 
 ## Contributors
+
 - Gleb Mikheev (https://github.com/glebmachine)
 - Graham Bates (https://github.com/grahambates)
 - Yusuke Yagyu (https://github.com/gyugyu)
