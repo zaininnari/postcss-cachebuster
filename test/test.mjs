@@ -1,5 +1,5 @@
 import postcss from 'postcss';
-import path from 'path';
+import path from 'node:path';
 import fs from 'fs';
 import sinon from 'sinon';
 import chalk from 'chalk';
