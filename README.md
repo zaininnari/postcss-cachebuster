@@ -19,12 +19,14 @@ npm i -D @zaininnari/postcss-cachebuster
 import postcss from 'postcss';
 import cachebuster from '@zaininnari/postcss-cachebuster';
 
-await postcss([
+const result = await postcss([
   cachebuster({
     imagesPath: '/images',
     cssPath: '/stylesheets',
   }),
 ]).process(css, { from: undefined });
+
+result.css;
 ```
 
 ## Input css example
@@ -58,8 +60,11 @@ await postcss([
 ## Configure
 
 ```js
+import postcss from 'postcss';
+import cachebuster from '@zaininnari/postcss-cachebuster';
+
 postcss([
-  require('postcss-cachebuster')({
+  cachebuster({
     imagesPath: '/images',
     cssPath: '/stylesheets',
   }),
@@ -101,8 +106,11 @@ Add to this list by setting the `additionalProps` configuration option.
 To add support for `mask-image` properties, for example:
 
 ```js
+import postcss from 'postcss';
+import cachebuster from '@zaininnari/postcss-cachebuster';
+
 postcss([
-  require('postcss-cachebuster')({
+  cachebuster({
     additionalProps: ['mask-image', '-webkit-mask-image'],
   }),
 ]);
@@ -112,8 +120,11 @@ Replace the default list by setting the `supportedProps` configuration option.
 To limit the cachbusting to background images only, for example:
 
 ```js
+import postcss from 'postcss';
+import cachebuster from '@zaininnari/postcss-cachebuster';
+
 postcss([
-  require('postcss-cachebuster')({
+  cachebuster({
     supportedProps: ['background', 'background-image'],
   }),
 ]);
