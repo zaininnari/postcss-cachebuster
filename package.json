@@ -1,6 +1,6 @@
 {
   "name": "@zaininnari/postcss-cachebuster",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Fork of postcss-cachebuster. Cachebusting all local files in css",
   "keywords": [
     "postcss",
