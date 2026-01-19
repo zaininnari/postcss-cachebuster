@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1 (2026-01-20)
+
+- update dependencies
+
 ## 0.6.0 (2026-01-04)
 
 - remove unnecessary canonical-path and path polyfill
