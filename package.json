@@ -28,6 +28,9 @@
   },
   "homepage": "https://github.com/zaininnari/postcss-cachebuster",
   "type": "module",
+  "engines": {
+    "node": ">=20 <25"
+  },
   "exports": {
     ".": "./index.mjs"
   },
