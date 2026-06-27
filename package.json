@@ -29,7 +29,7 @@
   "homepage": "https://github.com/zaininnari/postcss-cachebuster",
   "type": "module",
   "engines": {
-    "node": ">=20 <25"
+    "node": ">=22 <27"
   },
   "exports": {
     ".": "./index.mjs"
