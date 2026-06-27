@@ -50,7 +50,7 @@
     "mocha": "^11.7.6",
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
-    "sinon": "^21.0.1",
+    "sinon": "^22.0.0",
     "sinon-chai": "^4.0.1"
   },
   "overrides": {
