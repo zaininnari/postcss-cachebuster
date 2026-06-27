@@ -53,9 +53,6 @@
     "sinon": "^22.0.0",
     "sinon-chai": "^4.0.1"
   },
-  "overrides": {
-    "glob": "9.3.5"
-  },
   "scripts": {
     "lint": "eslint .",
     "test": "gulp --gulpfile gulpfile.mjs",
