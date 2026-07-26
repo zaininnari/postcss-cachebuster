@@ -1,29 +1,18 @@
 import postcss from 'postcss';
 import path from 'node:path';
 import fs from 'fs';
-import sinon from 'sinon';
 import chalk from 'chalk';
-import { expect, use as chaiUse } from 'chai';
-import sinonChai from 'sinon-chai';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import plugin from '../index.mjs';
 
-chaiUse(sinonChai);
-
-const assert = function (input, output, opts, done, expectations) {
-  postcss([plugin(opts)])
-    .process(input, { from: undefined })
-    .then(function (result) {
-      expect(result.css).to.eql(output);
-      expect(result.warnings()).to.be.empty;
-      if (expectations) {
-        expectations();
-      }
-      done();
-    })
-    .catch(function (error) {
-      done(error);
-    });
+const assert = async function (input, output, opts, expectations) {
+  const result = await postcss([plugin(opts)]).process(input, { from: undefined });
+  expect(result.css).toEqual(output);
+  expect(result.warnings()).toHaveLength(0);
+  if (expectations) {
+    expectations();
+  }
 };
 
 describe('postcss-cachebuster', function () {
@@ -33,97 +22,89 @@ describe('postcss-cachebuster', function () {
   const htcMtime = fs.statSync('./test/files/backgroundsize.htc').mtime.getTime().toString(16);
   const cssMtime = fs.statSync('./test/css/styles.css').mtime.getTime().toString(16);
 
-  it('Process image, with relative path', function (done) {
-    assert(
+  afterEach(function () {
+    vi.restoreAllMocks();
+  });
+
+  it('Process image, with relative path', async function () {
+    await assert(
       'a { background-image : url("files/horse.jpg"); }',
       'a { background-image : url("files/horse.jpg?v' + horseMtime + '"); }',
       { cssPath: '/test/' },
-      done,
     );
   });
 
-  it('Process image, with absolute path', function (done) {
-    assert(
+  it('Process image, with absolute path', async function () {
+    await assert(
       'a { background-image : url("/files/horse.jpg"); }',
       'a { background-image : url("/files/horse.jpg?v' + horseMtime + '"); }',
       { imagesPath: '/test/' },
-      done,
     );
   });
 
-  it('Process image, with spaces in name', function (done) {
-    assert(
+  it('Process image, with spaces in name', async function () {
+    await assert(
       'a { background-image : url("/files/horse with spaces.jpg"); }',
       'a { background-image : url("/files/horse%20with%20spaces.jpg?v' + horseWithSpacesMtime + '"); }',
       { imagesPath: '/test/' },
-      done,
     );
   });
 
-  it('Skip base64 images', function (done) {
-    assert(
+  it('Skip base64 images', async function () {
+    await assert(
       'a { background-image : url("data:image/png;base64,iVBORw0"); }',
       'a { background-image : url("data:image/png;base64,iVBORw0"); }',
       { imagesPath: '/test/' },
-      done,
     );
   });
 
-  it('Skip unresolved images', function (done) {
-    sinon.spy(console, 'log');
-    assert(
+  it('Skip unresolved images', async function () {
+    const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(function () {});
+    await assert(
       'a { background-image : url("there/is/no/image.jpg"); }',
       'a { background-image : url("there/is/no/image.jpg"); }',
       { imagesPath: '/test/' },
-      done,
       function () {
-        expect(console.log).to.be.calledOnceWith(
+        expect(consoleLogSpy).toHaveBeenCalledExactlyOnceWith(
           'Cachebuster:',
           chalk.yellow('file unreachable or not exists', 'there/is/no/image.jpg'),
         );
-        console.log.restore();
       },
     );
   });
 
-  it('Process font file', function (done) {
-    assert(
+  it('Process font file', async function () {
+    await assert(
       'a { src : url("files/opensansbold.ttf"); }',
       'a { src : url("files/opensansbold.ttf?v' + fontMtime + '"); }',
       { cssPath: '/test/' },
-      done,
     );
   });
 
-  it('Process .htc file', function (done) {
-    assert(
+  it('Process .htc file', async function () {
+    await assert(
       'a { behavior : url("files/backgroundsize.htc"); }',
       'a { behavior : url("files/backgroundsize.htc?v' + htcMtime + '"); }',
       { cssPath: '/test/' },
-      done,
     );
   });
 
-  it('Add cachebuster to import css file', function (done) {
-    assert(
-      '@import url("/css/styles.css");',
-      '@import url("/css/styles.css?v' + cssMtime + '");',
-      { imagesPath: '/test/' },
-      done,
-    );
+  it('Add cachebuster to import css file', async function () {
+    await assert('@import url("/css/styles.css");', '@import url("/css/styles.css?v' + cssMtime + '");', {
+      imagesPath: '/test/',
+    });
   });
 
-  it('Add cachebuster to all imports in the css file', function (done) {
-    assert(
+  it('Add cachebuster to all imports in the css file', async function () {
+    await assert(
       '@import url("/css/styles.css");@import url("/css/styles.css");',
       '@import url("/css/styles.css?v' + cssMtime + '");@import url("/css/styles.css?v' + cssMtime + '");',
       { imagesPath: '/test/' },
-      done,
     );
   });
 
-  it('Change url with function', function (done) {
-    assert(
+  it('Change url with function', async function () {
+    await assert(
       'a { background-image : url("files/horse.jpg"); }',
       'a { background-image : url("files/horse.abc123.jpg"); }',
       {
@@ -134,43 +115,36 @@ describe('postcss-cachebuster', function () {
         },
         cssPath: '/test/',
       },
-      done,
     );
   });
 
-  it('Change url with default checksum', function (done) {
-    assert(
+  it('Change url with default checksum', async function () {
+    await assert(
       'a { background-image : url("files/horse.jpg"); }',
       'a { background-image : url("files/horse.jpg?vac17ceac5567ecf01eab7c474b3b8426"); }',
       { type: 'checksum', cssPath: '/test/' },
-      done,
     );
   });
 
-  it('Change url with checksum using specified hash algorithm', function (done) {
-    assert(
+  it('Change url with checksum using specified hash algorithm', async function () {
+    await assert(
       'a { background-image : url("files/horse.jpg"); }',
       'a { background-image : url("files/horse.jpg?v8a88fc3de434b972f5bebdcd33474cc2259310c1"); }',
       { type: 'checksum', hashAlgorithm: 'sha1', cssPath: '/test/' },
-      done,
     );
   });
 
-  it('Skip unrecognized CSS property', function (done) {
-    assert(
-      'a { mask-image : url("/files/horse.jpg"); }',
-      'a { mask-image : url("/files/horse.jpg"); }',
-      { imagesPath: '/test/' },
-      done,
-    );
+  it('Skip unrecognized CSS property', async function () {
+    await assert('a { mask-image : url("/files/horse.jpg"); }', 'a { mask-image : url("/files/horse.jpg"); }', {
+      imagesPath: '/test/',
+    });
   });
 
-  it('Add cachebuster for additional specified CSS property', function (done) {
-    assert(
+  it('Add cachebuster for additional specified CSS property', async function () {
+    await assert(
       'a { mask-image : url("/files/horse.jpg"); }',
       'a { mask-image : url("/files/horse.jpg?v' + horseMtime + '"); }',
       { imagesPath: '/test/', additionalProps: ['mask-image'] },
-      done,
     );
   });
 });

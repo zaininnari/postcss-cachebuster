@@ -40,22 +40,18 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
-    "chai": "^6.2.2",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^18.0.0",
     "globals": "^17.0.0",
-    "gulp": "^5.0.1",
-    "gulp-postcss": "^10.0.0",
-    "mocha": "^11.7.6",
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
-    "sinon": "^22.0.0",
-    "sinon-chai": "^4.0.1"
+    "vitest": "^4.1.10"
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "gulp --gulpfile gulpfile.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "format:check": "prettier . --check",
     "format:write": "prettier . --write"
   }

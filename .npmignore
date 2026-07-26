@@ -17,6 +17,5 @@ node_modules/
 test/
 .prettierignore
 eslint.config.js
-gulpfile.mjs
 package-lock.json
 prettier.config.js
