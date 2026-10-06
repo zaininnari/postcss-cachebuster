@@ -1,4 +1,4 @@
-# PostCSS Cachebuster [![Test](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test.yml/badge.svg)](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test.yml) [![Test (latest deps)](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test-latest.yml/badge.svg)](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test-latest.yml)
+# PostCSS Cachebuster [![Test](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test.yml/badge.svg)](https://github.com/zaininnari/postcss-cachebuster/actions/workflows/test.yml)
 
 This project is a fork of https://github.com/glebmachine/postcss-cachebuster.
 
